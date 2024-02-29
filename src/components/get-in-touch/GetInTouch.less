@@ -2,15 +2,15 @@
   .get-in-touch-inner {
     border-radius: 1.375rem;
     border: 1px solid #fff;
-    display: flex;
-    align-items: center;
-    padding: 6% 2%;
-    gap: 4%;
-    margin-top: 4%;
+    padding: 3rem 1.2rem;
+    margin-top: 1rem;
 
-    @media screen and (max-width: 767px) {
-      flex-wrap: wrap;
-      padding: 3rem 1.2rem;
+    @media screen and (min-width: 768px) {
+      padding: 6% 2%;
+      display: flex;
+      align-items: center;
+      gap: 4%;
+      margin-top: 4%;
     }
 
     &-text {
@@ -23,7 +23,7 @@
       width: 70%;
 
       @media screen and (max-width: 767px) {
-        font-size: 3.125rem;
+        font-size: 3rem;
       }
 
       span {
@@ -31,7 +31,7 @@
         line-height: 100.9%;
 
         @media screen and (max-width: 767px) {
-          font-size: 3.125rem;
+          font-size: 3.88113rem;
         }
       }
     }
@@ -50,13 +50,19 @@
     background-color: transparent;
 
     @media screen and (max-width: 767px) {
-      margin-top: 1rem;
+      margin: 1rem auto 0;
+      width: 6.05144rem;
+      height: 6.05144rem;
     }
 
     img {
       width: 7.971rem;
       height: 7.971rem;
       transform: rotate(7.04deg);
+      @media screen and (max-width: 767px) {
+        width: 2.36744rem;
+        height: 2.36744rem;
+      }
     }
 
     p {
@@ -70,6 +76,12 @@
       line-height: normal;
       letter-spacing: 0.07144rem;
       margin-top: 1.5rem;
+
+      @media screen and (max-width: 767px) {
+        font-size: 0.42419rem;
+        letter-spacing: 0.02119rem;
+        margin-top: 0.46rem;
+      }
     }
   }
 }

@@ -1,14 +1,21 @@
 .section-footer {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   margin-top: 3.8rem;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+  }
 
   ul {
     display: flex;
     flex-wrap: wrap;
+    margin-top: 1.25rem;
 
     @media screen and (min-width: 768px) {
       margin-left: 2rem;
+      margin-top: 0;
     }
 
     li {
