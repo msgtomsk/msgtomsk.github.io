@@ -4,8 +4,8 @@ function Work({ workDetails }: { workDetails: any }) {
   const { workName, aboutWork, skills } = workDetails;
   return (
     <div className="work-container">
-      <div></div>
-      <div>
+      <div className="work-container--left"></div>
+      <div className="work-container--right">
         <div className="work-name">{workName}</div>
         <p className="desc-text">{aboutWork}</p>
         <ul>

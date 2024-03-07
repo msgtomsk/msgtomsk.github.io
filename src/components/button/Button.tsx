@@ -1,87 +1,77 @@
 import { useEffect } from "react";
+import gsap from "gsap";
 
 import "./Button.less";
 
-function Button({ onClick }: { onClick: any }) {
-  const initMagneticCursor = () => {
-    console.log("called");
-    const button: HTMLElement = document.querySelector(".button")!;
-    let {
-      width,
-      height,
-      x: buttonX,
-      y: buttonY,
-    } = button.getBoundingClientRect(); // gives you width, height, left-X,top-y of the button
+function Button({
+  onClick,
+  isGetInTouch,
+}: {
+  onClick: any;
+  isGetInTouch?: boolean;
+}) {
+  function initAnimation() {
+    var mWrap = document.querySelectorAll(".magnetic-wrap");
 
-    buttonX = buttonX + width / 2; //  center point of button on x-axis
-    buttonY = buttonY + height / 2; //  center point of button on y-axis
+    function parallaxIt(e: any, wrap: any, movement = 1) {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      var boundingRect = wrap.mArea.getBoundingClientRect();
+      var halfDiff = Math.abs(boundingRect.width - boundingRect.height) / 2;
+      var relX = e.pageX - boundingRect.left - halfDiff;
+      var relY = e.pageY - boundingRect.top;
 
-    // console.log("btnx", buttonX, "btny", buttonY);
-
-    /*************** Functions ***************/
-
-    let distance = width;
-    let mouseHasEntered = true;
-    let mouseIsInButtonTerritory;
-
-    function mouseMove(e: { x: any; y: any }) {
-      const x = e.x; // current x of cursor
-      const y = e.y; // current y of cursor
-
-      console.log(x, y, distance, "btnx", buttonX, "btny", buttonY);
-
-      const leftBorderLine = buttonX - distance;
-      const rightBorderLine = buttonX + distance;
-      const topBorderLine = buttonY - distance;
-      const bottomBorderline = buttonY + distance;
-      const xWalk = (x - buttonX) / 2; // the distance to move the button when mouse moves on X axis
-      const yWalk = (y - buttonY) / 2; // the distance to move the button when mouse moves on Y axis
-
-      mouseIsInButtonTerritory =
-        x > leftBorderLine &&
-        x < rightBorderLine &&
-        y > topBorderLine &&
-        y < bottomBorderline; // becomes true if  mouse is inside all of these border-line
-
-      if (mouseIsInButtonTerritory) {
-        if (mouseHasEntered) {
-          // this must happen only once to create outside borderline
-          //creating another level borderline by incresing distance;
-          // while cursor is returing the button comes out of nearest border-line and return from this borderline
-          distance = distance + distance;
-          mouseHasEntered = false;
-        }
-        catchCursor(xWalk, yWalk); // call the function when mouse in in the button's territory
-      } else {
-        resetPositon();
-      }
+      gsap.to(wrap.mContent, {
+        x: (relX - boundingRect.width / 2) * movement,
+        y: (relY - boundingRect.height / 2 - scrollTop) * movement,
+        // ease: "power3",
+        ease: "power2.out",
+        duration: 0.9,
+        scale: 1.1
+      });
     }
 
-    function catchCursor(xWalk: number, yWalk: number) {
-      // translates the button in the direction where cursor is.
-      button.style.transform = `translate(${xWalk}px, ${yWalk}px)`;
-    }
+    mWrap.forEach(function (wrap: any) {
+      wrap.mContent = wrap.querySelector(".js-magnetic-content");
+      wrap.mArea = wrap.querySelector(".js-magnetic-area");
 
-    function resetPositon() {
-      // resets the postion of the button as it was initial.
-      button.style.transform = `translate(${0}px, ${0}px)`;
-      if (!mouseHasEntered) distance /= 2;
-      mouseHasEntered = true;
-      // when button is return to it's position (mouseHasEntered = true) lets to increase the initial borderline of button for the next time
-    }
+      wrap.mArea.addEventListener("mousemove", function (e: MouseEvent) {
+        parallaxIt(e, wrap);
+      });
 
-    /*************** Event-handler ***************/
-
-    window.addEventListener("mousemove", mouseMove);
-  };
-
+      wrap.mArea.addEventListener("mouseleave", function (e: MouseEvent) {
+        gsap.to(wrap.mContent, {
+          scale: 1,
+          x: 0,
+          y: 0,
+          // ease: "power3",
+          ease: 'elastic.out(1.2, 0.4)',
+          duration: 0.9,
+        });
+      });
+    });
+  }
   useEffect(() => {
-    initMagneticCursor();
+    if (window.innerWidth > 767) {
+      initAnimation();
+    }
   }, []);
+
   return (
-    <button type="button" className="button" onClick={onClick}>
-      Btn
-    </button>
+    <div className="magnetic-wrap">
+      <div onClick={onClick} className="js-magnetic-area"></div>
+      <div className="js-magnetic-content">
+        {isGetInTouch ? (
+          <button className="get-in-touch-button">
+            <img src="src/assets/hand.svg" alt="hand" />
+            <p>Lets get in touch</p>
+          </button>
+        ) : (
+          <button type="button" className="button">
+            Btn
+          </button>
+        )}
+      </div>
+    </div>
   );
 }
 
