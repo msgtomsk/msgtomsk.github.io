@@ -19,6 +19,8 @@ const CAPABILITIES = [
 
 function OtherCapabilities() {
   const initCanvas = () => {
+    // Thanks to https://codepen.io/asha23/pen/NWoZVL
+    
     //---------------------------------------
     // Set up ball options
     //---------------------------------------
